@@ -426,5 +426,26 @@ print(map8898) #save it as 1000 x 797 png or jpeg
 
 mapshot(map5520, url = paste0(getwd(),"/5520Map_updated.html"),remove_controls = NULL)
 
+##################################################
+###stopover
+
+
+Summary<- stationary.migration.summary(ResultGEO, prob.cutoff = 0.1, min.stay = 3)
+
+saveRDS(Summary, file='BH520.RDS')
+Summary<-readRDS(file='BH520.RDS')
+Summary$Stationary.periods$stopover_duration<-
+  as.numeric(difftime(Summary$Stationary.periods$Departure.Q.50,
+                      Summary$Stationary.periods$Arrival.Q.50, units='days'))
+
+Main_stopovers <-Summary$Stationary.periods[is.na(Summary$Stationary.periods$stopover_duration) | Summary$Stationary.periods$stopover_duration>=1,]
+
+Main_stopovers <- Main_stopovers[-which(is.na(Main_stopovers$stopover_duration)),]
+
+Main_stopovers <- Main_stopovers %>% dplyr::select (Meanlat, Meanlon,Distance2, Distance2cumulative, Arrival.Q.50, Departure.Q.50,stopover_duration)
+Main_stopovers
+
+write.csv(Main_stopovers,
+          file="BH520.csv", quote=FALSE, row.names=FALSE)
 
 
