@@ -1,0 +1,59 @@
+paths:
+  # One or more .lig files (local paths). No data included in the repo.
+  lig_files:
+    - "/Users/.../GEO008.lig"
+
+  # Intermediate exports (kept local)
+  intermediate_dir: "outputs/intermediate"
+
+outputs:
+  dir: "outputs"
+  figures_dir: "outputs/figures"
+  results_dir: "outputs/results"
+
+geolight:
+  threshold: 32
+  offset: 19         # hours; adjust per tag/species
+  loess_k: 2
+  coord_tol: 0.13    # tolerance around equinox (discard positions)
+  known_coord:
+    lon: -97.130305
+    lat: 49.734761
+  sun_elev_calib_window:
+    start_index: 33   # indices into twilight table (example)
+    end_index: 63     # indices into twilight table (example)
+
+changelight:
+  quantile: 0.9
+  days: 2
+
+flightr:
+  # Analysis window for get.tags.data
+  start_date: "2016-07-01 00:01:00"
+  end_date:   "2017-05-01 00:01:57"
+  tz: "GMT"
+
+  # Calibration window at known_coord
+  calibration_start: "2016-07-25 00:00:00"
+  calibration_stop:  "2016-08-07 00:00:00"
+
+  # Grid bounding box (example)
+  grid:
+    left: -130
+    right: -34
+    bottom: -40
+    top: 70
+    distance_from_land_allowed_to_use: [-inf, inf]
+    distance_from_land_allowed_to_stay: [-inf, inf]
+
+  # Particle filter
+  n_particles: 10000   # use 1e4 for trial; 1e6 for final
+  known_last: false
+  precision_sd: 25
+  check_outliers: true
+  b: 1500
+  threads: -1
+
+leaflet:
+  # Optional for interactive maps. Keep API keys out of git.
+  google_key: ""
